@@ -1,0 +1,27 @@
+@startuml
+actor Client
+participant "Trade Store API" as API
+participant "Validation Service" as Service
+database "PostgreSQL" as DB
+
+Client -> API: POST /trades
+API -> Service: Validate trade
+Service -> DB: Fetch existing versions
+DB --> Service: Existing trade versions
+
+alt Lower version received
+    Service --> API: Reject trade
+    API --> Client: 409 Conflict
+else Maturity date in past
+    Service --> API: Reject trade
+    API --> Client: 422 Unprocessable Entity
+else Same version
+    Service -> DB: Replace existing version
+    DB --> Service: Updated trade
+    API --> Client: 200 OK
+else New or higher version
+    Service -> DB: Save trade
+    DB --> Service: Saved trade
+    API --> Client: 201 Created
+end
+@enduml

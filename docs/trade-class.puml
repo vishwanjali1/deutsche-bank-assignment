@@ -1,0 +1,36 @@
+@startuml
+class Trade {
+  +id: int
+  +tradeId: str
+  +version: int
+  +counterPartyId: str
+  +portfolioId: str
+  +maturityDate: date
+  +createdDate: date
+  +expired: bool
+}
+
+class TradeCreate {
+  +tradeId: str
+  +version: int
+  +counterPartyId: str
+  +portfolioId: str
+  +maturityDate: date
+}
+
+class TradeResponse {
+  +createdDate: date
+  +expired: bool
+}
+
+class TradeStoreService {
+  +save_trade(trade: TradeCreate)
+  +get_latest_trade(tradeId: str)
+  +get_all_versions(tradeId: str)
+  +expire_matured_trades()
+}
+
+TradeCreate --> TradeStoreService
+TradeStoreService --> Trade
+Trade --> TradeResponse
+@enduml
