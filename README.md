@@ -1,6 +1,7 @@
 # deutsche-bank-assignment
 
- # Step1: python -m venv venv
+ # Step1: Create virtual env
+ python -m venv venv
 
  # Step2: Activate venv
        '''
